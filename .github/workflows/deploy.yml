@@ -4,9 +4,13 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write    # allow pushing to gh-pages
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,8 +26,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy
+      - name: Configure Git user
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages   # target branch
-          folder: dist       # build output
+          branch: gh-pages          # target branch
+          folder: dist              # Vite build output
+          token: ${{ secrets.GITHUB_TOKEN }}   # explicit token
