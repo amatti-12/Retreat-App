@@ -37,3 +37,4 @@ jobs:
           branch: gh-pages          # target branch
           folder: dist              # Vite build output
           token: ${{ secrets.GITHUB_TOKEN }}   # explicit token
+          clean: true
